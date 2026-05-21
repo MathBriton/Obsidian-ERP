@@ -1,0 +1,11 @@
+@ObsidianERP.Api_HostAddress = http://localhost:8080
+
+### Health check
+GET {{ObsidianERP.Api_HostAddress}}/health
+Accept: application/json
+
+### Swagger document
+GET {{ObsidianERP.Api_HostAddress}}/swagger/v1/swagger.json
+Accept: application/json
+
+###

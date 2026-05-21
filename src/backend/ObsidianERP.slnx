@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="ObsidianERP.Api/ObsidianERP.Api.csproj" />
+  <Project Path="ObsidianERP.Application/ObsidianERP.Application.csproj" />
+  <Project Path="ObsidianERP.Domain/ObsidianERP.Domain.csproj" />
+  <Project Path="ObsidianERP.Infrastructure/ObsidianERP.Infrastructure.csproj" />
+  <Project Path="ObsidianERP.Tests/ObsidianERP.Tests.csproj" />
+</Solution>
