@@ -14,9 +14,10 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
-      // Em dev o SPA chama /health no mesmo origin e o Vite encaminha para a API,
-      // evitando CORS. Em produção o nginx faz esse proxy (Fase C).
+      // Em dev o SPA chama /health e /api no mesmo origin e o Vite encaminha para
+      // a API, evitando CORS. Em produção o nginx faz esse proxy (Fase C).
       '/health': 'http://localhost:5026',
+      '/api': 'http://localhost:5026',
     },
   },
   test: {

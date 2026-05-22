@@ -20,8 +20,8 @@ export default defineConfig([
     },
   },
   {
-    // Componentes vendados do shadcn/ui exportam componentes + variants juntos.
-    files: ['src/components/ui/**/*.{ts,tsx}'],
+    // shadcn/ui exporta componentes + variants juntos; context expõe provider + hook.
+    files: ['src/components/ui/**/*.{ts,tsx}', 'src/context/**/*.{ts,tsx}'],
     rules: {
       'react-refresh/only-export-components': 'off',
     },
