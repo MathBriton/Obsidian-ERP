@@ -1,15 +1,15 @@
 using System.Net;
 using FluentAssertions;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
+using ObsidianERP.Tests.Common;
 
 namespace ObsidianERP.Tests.Api;
 
-public class SwaggerEndpointTests : IClassFixture<WebApplicationFactory<Program>>
+public class SwaggerEndpointTests : IClassFixture<CustomWebApplicationFactory>
 {
-    private readonly WebApplicationFactory<Program> _factory;
+    private readonly CustomWebApplicationFactory _factory;
 
-    public SwaggerEndpointTests(WebApplicationFactory<Program> factory)
+    public SwaggerEndpointTests(CustomWebApplicationFactory factory)
     {
         _factory = factory;
     }

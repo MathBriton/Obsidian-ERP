@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.OpenApi;
+using ObsidianERP.Api.Authentication;
 using ObsidianERP.Api.HealthChecks;
 using ObsidianERP.Application;
 using ObsidianERP.Infrastructure;
@@ -22,6 +23,7 @@ builder.Services.AddHealthChecks();
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddJwtAuthentication(builder.Configuration);
 
 var app = builder.Build();
 
@@ -30,6 +32,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 app.MapHealthChecks("/health", new HealthCheckOptions

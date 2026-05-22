@@ -1,7 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ObsidianERP.Application.Abstractions;
 using ObsidianERP.Infrastructure.Persistence;
+using ObsidianERP.Infrastructure.Persistence.Repositories;
+using ObsidianERP.Infrastructure.Security;
 
 namespace ObsidianERP.Infrastructure;
 
@@ -15,6 +18,11 @@ public static class DependencyInjection
 
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(connectionString));
+
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+        services.AddSingleton<IPasswordHasher, BcryptPasswordHasher>();
+        services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 
         return services;
     }
