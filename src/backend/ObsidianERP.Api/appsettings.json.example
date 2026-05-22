@@ -1,0 +1,18 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Port=5432;Database=SEU_BANCO;Username=SEU_USUARIO;Password=SUA_SENHA"
+  },
+  "Jwt": {
+    "Issuer": "obsidian-erp",
+    "Audience": "obsidian-erp-client",
+    "AccessTokenMinutes": 15,
+    "RefreshTokenDays": 7
+  }
+}
