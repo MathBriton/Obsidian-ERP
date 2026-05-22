@@ -27,6 +27,11 @@ services:
       ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
       ASPNETCORE_HTTP_PORTS: "8080"
       ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}"
+      Jwt__Issuer: ${JWT__Issuer}
+      Jwt__Audience: ${JWT__Audience}
+      Jwt__Secret: ${JWT__Secret}
+      Jwt__AccessTokenMinutes: ${JWT__AccessTokenMinutes}
+      Jwt__RefreshTokenDays: ${JWT__RefreshTokenDays}
     ports:
       - "${API_PORT:-8080}:8080"
     depends_on:
