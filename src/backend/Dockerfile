@@ -18,10 +18,19 @@ RUN dotnet publish ObsidianERP.Api/ObsidianERP.Api.csproj \
 
 # ---- runtime --------------------------------------------------------------
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
+
+# curl é usado pelo healthcheck do compose
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 COPY --from=build /app/publish ./
 
 ENV ASPNETCORE_HTTP_PORTS=8080
 EXPOSE 8080
+
+# Executa como usuário não-root (definido na imagem base do .NET)
+USER $APP_UID
 
 ENTRYPOINT ["dotnet", "ObsidianERP.Api.dll"]

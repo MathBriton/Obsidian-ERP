@@ -57,3 +57,20 @@ jobs:
 
       - name: Build
         run: npm run build
+
+  docker:
+    name: Docker (build images)
+    runs-on: ubuntu-latest
+    needs: [backend, frontend]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build backend image
+        run: docker build -t obsidian-erp-api:ci ./src/backend
+
+      - name: Build frontend image
+        run: docker build -t obsidian-erp-web:ci ./src/frontend
+
+      - name: Validate compose config
+        run: docker compose config --quiet
+

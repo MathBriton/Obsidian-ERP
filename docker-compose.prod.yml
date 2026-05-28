@@ -1,0 +1,15 @@
+# Override de produção.
+# Uso: docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
+name: obsidian-erp
+
+services:
+  db:
+    restart: always
+
+  api:
+    restart: always
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+
+  web:
+    restart: always
