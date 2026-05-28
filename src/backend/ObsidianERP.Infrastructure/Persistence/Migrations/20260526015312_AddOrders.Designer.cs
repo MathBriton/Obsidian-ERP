@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ObsidianERP.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using ObsidianERP.Infrastructure.Persistence;
 namespace ObsidianERP.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260526015312_AddOrders")]
+    partial class AddOrders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,6 +28,7 @@ namespace ObsidianERP.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("ObsidianERP.Domain.Entities.Customer", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -66,6 +70,7 @@ namespace ObsidianERP.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("ObsidianERP.Domain.Entities.Order", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -96,6 +101,7 @@ namespace ObsidianERP.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("ObsidianERP.Domain.Entities.OrderItem", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -126,6 +132,7 @@ namespace ObsidianERP.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("ObsidianERP.Domain.Entities.OrderStatusHistory", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -149,6 +156,7 @@ namespace ObsidianERP.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("ObsidianERP.Domain.Entities.RefreshToken", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -181,6 +189,7 @@ namespace ObsidianERP.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("ObsidianERP.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
