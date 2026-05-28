@@ -5,6 +5,8 @@ import { AppLayout } from "@/layouts/AppLayout"
 import { CustomersPage } from "@/pages/CustomersPage"
 import { HomePage } from "@/pages/HomePage"
 import { LoginPage } from "@/pages/LoginPage"
+import { OrderDetailsPage } from "@/pages/OrderDetailsPage"
+import { OrdersPage } from "@/pages/OrdersPage"
 import { RegisterPage } from "@/pages/RegisterPage"
 
 export const router = createBrowserRouter([
@@ -19,6 +21,8 @@ export const router = createBrowserRouter([
         children: [
           { index: true, element: <HomePage /> },
           { path: "customers", element: <CustomersPage /> },
+          { path: "orders", element: <OrdersPage /> },
+          { path: "orders/:id", element: <OrderDetailsPage /> },
         ],
       },
     ],
