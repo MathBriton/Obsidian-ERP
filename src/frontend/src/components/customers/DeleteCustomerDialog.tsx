@@ -47,11 +47,7 @@ export function DeleteCustomerDialog({ customer, onOpenChange }: DeleteCustomerD
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Cancelar
           </Button>
-          <Button
-            variant="destructive"
-            onClick={handleDelete}
-            disabled={deleteMutation.isPending}
-          >
+          <Button variant="destructive" onClick={handleDelete} disabled={deleteMutation.isPending}>
             {deleteMutation.isPending ? "Excluindo…" : "Excluir"}
           </Button>
         </DialogFooter>

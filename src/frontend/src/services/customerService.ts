@@ -14,9 +14,7 @@ export function listCustomers(query: CustomerQuery = {}): Promise<PagedResult<Cu
   if (query.search) params.set("search", query.search)
 
   const queryString = params.toString()
-  return apiFetch<PagedResult<Customer>>(
-    `/api/customers${queryString ? `?${queryString}` : ""}`
-  )
+  return apiFetch<PagedResult<Customer>>(`/api/customers${queryString ? `?${queryString}` : ""}`)
 }
 
 export function createCustomer(body: CreateCustomerRequest): Promise<Customer> {

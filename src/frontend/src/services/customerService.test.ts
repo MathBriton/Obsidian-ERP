@@ -47,7 +47,7 @@ describe("customerService", () => {
     expect(result.name).toBe("Acme")
     expect(fetchMock).toHaveBeenCalledWith(
       "/api/customers",
-      expect.objectContaining({ method: "POST" })
+      expect.objectContaining({ method: "POST" }),
     )
   })
 })

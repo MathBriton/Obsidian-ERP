@@ -30,9 +30,7 @@ async function toApiError(response: Response): Promise<ApiError> {
     if (contentType.includes("json")) {
       problem = (await response.json()) as ProblemDetails
 
-      const fieldErrors = problem?.errors
-        ? Object.values(problem.errors).flat()
-        : []
+      const fieldErrors = problem?.errors ? Object.values(problem.errors).flat() : []
 
       if (fieldErrors.length > 0) {
         message = fieldErrors.join(" ")
@@ -52,7 +50,7 @@ async function toApiError(response: Response): Promise<ApiError> {
 /** Mensagem legível para qualquer erro (ApiError, Error ou desconhecido). */
 export function getErrorMessage(
   error: unknown,
-  fallback = "Algo deu errado. Tente novamente."
+  fallback = "Algo deu errado. Tente novamente.",
 ): string {
   if (error instanceof ApiError) {
     return error.message

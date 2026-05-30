@@ -22,5 +22,5 @@ createRoot(document.getElementById("root")!).render(
         <Toaster richColors position="top-right" />
       </QueryClientProvider>
     </ErrorBoundary>
-  </StrictMode>
+  </StrictMode>,
 )

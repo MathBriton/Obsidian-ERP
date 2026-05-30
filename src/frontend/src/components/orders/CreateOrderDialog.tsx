@@ -54,7 +54,7 @@ function CreateOrderForm({ onSaved }: { onSaved: () => void }) {
 
   function updateItem(index: number, field: keyof ItemRow, value: string) {
     setItems((current) =>
-      current.map((item, i) => (i === index ? { ...item, [field]: value } : item))
+      current.map((item, i) => (i === index ? { ...item, [field]: value } : item)),
     )
   }
 

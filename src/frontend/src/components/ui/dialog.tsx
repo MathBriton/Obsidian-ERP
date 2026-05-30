@@ -41,7 +41,7 @@ function DialogContent({
         data-slot="dialog-content"
         className={cn(
           "bg-background fixed top-[50%] left-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border p-6 shadow-lg",
-          className
+          className,
         )}
         {...props}
       >
@@ -75,10 +75,7 @@ function DialogFooter({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
-function DialogTitle({
-  className,
-  ...props
-}: React.ComponentProps<typeof DialogPrimitive.Title>) {
+function DialogTitle({ className, ...props }: React.ComponentProps<typeof DialogPrimitive.Title>) {
   return (
     <DialogPrimitive.Title
       data-slot="dialog-title"

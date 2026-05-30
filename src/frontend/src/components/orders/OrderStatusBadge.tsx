@@ -26,7 +26,7 @@ export function OrderStatusBadge({ status }: { status: OrderStatus }) {
     <span
       className={cn(
         "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium",
-        item.className
+        item.className,
       )}
     >
       {item.label}

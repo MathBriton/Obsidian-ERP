@@ -13,10 +13,7 @@ describe("getHealth", () => {
       timestamp: "2026-01-01T00:00:00Z",
       checks: [],
     }
-    vi.stubGlobal(
-      "fetch",
-      vi.fn().mockResolvedValue({ ok: true, json: async () => payload })
-    )
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => payload }))
 
     const result = await getHealth()
 
@@ -26,7 +23,7 @@ describe("getHealth", () => {
   it("lanca erro quando a API responde com falha", async () => {
     vi.stubGlobal(
       "fetch",
-      vi.fn().mockResolvedValue({ ok: false, status: 503, json: async () => ({}) })
+      vi.fn().mockResolvedValue({ ok: false, status: 503, json: async () => ({}) }),
     )
 
     await expect(getHealth()).rejects.toThrow()

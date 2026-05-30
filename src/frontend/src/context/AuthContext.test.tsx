@@ -10,9 +10,7 @@ function Consumer() {
     <div>
       <span data-testid="status">{isAuthenticated ? "in" : "out"}</span>
       <span data-testid="email">{user?.email ?? ""}</span>
-      <button onClick={() => login({ email: "ana@x.com", password: "senha123" })}>
-        entrar
-      </button>
+      <button onClick={() => login({ email: "ana@x.com", password: "senha123" })}>entrar</button>
       <button onClick={logout}>sair</button>
     </div>
   )
@@ -34,13 +32,13 @@ describe("AuthContext", () => {
   it("login autentica e persiste a sessão", async () => {
     vi.stubGlobal(
       "fetch",
-      vi.fn().mockResolvedValue({ ok: true, status: 200, json: async () => payload })
+      vi.fn().mockResolvedValue({ ok: true, status: 200, json: async () => payload }),
     )
 
     render(
       <AuthProvider>
         <Consumer />
-      </AuthProvider>
+      </AuthProvider>,
     )
     expect(screen.getByTestId("status").textContent).toBe("out")
 
@@ -55,13 +53,13 @@ describe("AuthContext", () => {
     localStorage.setItem("obsidian.accessToken", "access")
     localStorage.setItem(
       "obsidian.user",
-      JSON.stringify({ id: "1", name: "Ana", email: "ana@x.com" })
+      JSON.stringify({ id: "1", name: "Ana", email: "ana@x.com" }),
     )
 
     render(
       <AuthProvider>
         <Consumer />
-      </AuthProvider>
+      </AuthProvider>,
     )
 
     expect(screen.getByTestId("status").textContent).toBe("in")
@@ -72,13 +70,13 @@ describe("AuthContext", () => {
     localStorage.setItem("obsidian.accessToken", "access")
     localStorage.setItem(
       "obsidian.user",
-      JSON.stringify({ id: "1", name: "Ana", email: "ana@x.com" })
+      JSON.stringify({ id: "1", name: "Ana", email: "ana@x.com" }),
     )
 
     render(
       <AuthProvider>
         <Consumer />
-      </AuthProvider>
+      </AuthProvider>,
     )
     await userEvent.click(screen.getByText("sair"))
 

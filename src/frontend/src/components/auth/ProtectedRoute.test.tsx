@@ -16,7 +16,7 @@ function renderAt(path: string) {
           <Route path="/login" element={<div>página de login</div>} />
         </Routes>
       </MemoryRouter>
-    </AuthProvider>
+    </AuthProvider>,
   )
 }
 
@@ -32,7 +32,7 @@ describe("ProtectedRoute", () => {
     localStorage.setItem("obsidian.accessToken", "access")
     localStorage.setItem(
       "obsidian.user",
-      JSON.stringify({ id: "1", name: "Ana", email: "ana@x.com" })
+      JSON.stringify({ id: "1", name: "Ana", email: "ana@x.com" }),
     )
     renderAt("/")
     expect(screen.getByText("conteúdo protegido")).toBeInTheDocument()

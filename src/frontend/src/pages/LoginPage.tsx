@@ -2,13 +2,7 @@ import { useState, type FormEvent } from "react"
 import { Link, useNavigate } from "react-router-dom"
 
 import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useAuth } from "@/context/AuthContext"
@@ -70,10 +64,7 @@ export function LoginPage() {
             </Button>
             <p className="text-muted-foreground text-center text-sm">
               Não tem conta?{" "}
-              <Link
-                to="/register"
-                className="text-primary underline-offset-4 hover:underline"
-              >
+              <Link to="/register" className="text-primary underline-offset-4 hover:underline">
                 Criar conta
               </Link>
             </p>

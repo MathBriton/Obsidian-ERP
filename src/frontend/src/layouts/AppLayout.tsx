@@ -7,7 +7,7 @@ import { useAuth } from "@/context/AuthContext"
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   cn(
     "text-sm font-medium transition-colors",
-    isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+    isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground",
   )
 
 export function AppLayout() {

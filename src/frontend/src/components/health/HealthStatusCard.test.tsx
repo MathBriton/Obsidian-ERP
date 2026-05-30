@@ -13,9 +13,7 @@ function renderWithClient(ui: ReactNode) {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false } },
   })
-  return render(
-    <QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>
-  )
+  return render(<QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>)
 }
 
 describe("HealthStatusCard", () => {
@@ -29,7 +27,7 @@ describe("HealthStatusCard", () => {
           timestamp: "2026-01-01T00:00:00Z",
           checks: [],
         }),
-      })
+      }),
     )
 
     renderWithClient(<HealthStatusCard />)
@@ -40,13 +38,11 @@ describe("HealthStatusCard", () => {
   it("exibe mensagem de erro quando a API falha", async () => {
     vi.stubGlobal(
       "fetch",
-      vi.fn().mockResolvedValue({ ok: false, status: 503, json: async () => ({}) })
+      vi.fn().mockResolvedValue({ ok: false, status: 503, json: async () => ({}) }),
     )
 
     renderWithClient(<HealthStatusCard />)
 
-    expect(
-      await screen.findByText(/não foi possível conectar/i)
-    ).toBeInTheDocument()
+    expect(await screen.findByText(/não foi possível conectar/i)).toBeInTheDocument()
   })
 })

@@ -6,11 +6,7 @@ import {
   listCustomers,
   updateCustomer,
 } from "@/services/customerService"
-import type {
-  CreateCustomerRequest,
-  CustomerQuery,
-  UpdateCustomerRequest,
-} from "@/types/customer"
+import type { CreateCustomerRequest, CustomerQuery, UpdateCustomerRequest } from "@/types/customer"
 
 const CUSTOMERS_KEY = "customers"
 

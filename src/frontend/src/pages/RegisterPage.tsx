@@ -2,13 +2,7 @@ import { useState, type FormEvent } from "react"
 import { Link, useNavigate } from "react-router-dom"
 
 import { Button } from "@/components/ui/button"
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useAuth } from "@/context/AuthContext"
@@ -81,10 +75,7 @@ export function RegisterPage() {
             </Button>
             <p className="text-muted-foreground text-center text-sm">
               Já tem conta?{" "}
-              <Link
-                to="/login"
-                className="text-primary underline-offset-4 hover:underline"
-              >
+              <Link to="/login" className="text-primary underline-offset-4 hover:underline">
                 Entrar
               </Link>
             </p>

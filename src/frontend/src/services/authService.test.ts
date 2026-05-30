@@ -28,14 +28,14 @@ describe("authService", () => {
     expect(result.user.email).toBe("ana@x.com")
     expect(fetchMock).toHaveBeenCalledWith(
       "/api/auth/login",
-      expect.objectContaining({ method: "POST" })
+      expect.objectContaining({ method: "POST" }),
     )
   })
 
   it("lança erro quando a API responde com falha", async () => {
     vi.stubGlobal(
       "fetch",
-      vi.fn().mockResolvedValue({ ok: false, status: 401, json: async () => ({}) })
+      vi.fn().mockResolvedValue({ ok: false, status: 401, json: async () => ({}) }),
     )
 
     await expect(login({ email: "x@x.com", password: "errada" })).rejects.toThrow()

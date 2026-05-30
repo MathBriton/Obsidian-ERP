@@ -28,9 +28,11 @@ describe("apiFetch", () => {
   it("usa o 'detail' do ProblemDetails como mensagem do erro", async () => {
     vi.stubGlobal(
       "fetch",
-      vi.fn().mockResolvedValue(
-        mockResponse({ title: "Conflito", detail: "O e-mail já está em uso.", status: 409 }, 409)
-      )
+      vi
+        .fn()
+        .mockResolvedValue(
+          mockResponse({ title: "Conflito", detail: "O e-mail já está em uso.", status: 409 }, 409),
+        ),
     )
 
     const error = await captureError(apiFetch("/api/x"))
@@ -47,8 +49,8 @@ describe("apiFetch", () => {
         mockResponse({
           title: "Erro de validação",
           errors: { Email: ["E-mail inválido."], Name: ["Obrigatório."] },
-        })
-      )
+        }),
+      ),
     )
 
     const error = await captureError(apiFetch("/api/x"))
@@ -60,7 +62,9 @@ describe("apiFetch", () => {
   it("usa o 'title' quando não há detail nem errors", async () => {
     vi.stubGlobal(
       "fetch",
-      vi.fn().mockResolvedValue(mockResponse({ title: "Recurso não encontrado", status: 404 }, 404))
+      vi
+        .fn()
+        .mockResolvedValue(mockResponse({ title: "Recurso não encontrado", status: 404 }, 404)),
     )
 
     const error = await captureError(apiFetch("/api/x"))
@@ -71,7 +75,7 @@ describe("apiFetch", () => {
   it("cai em mensagem genérica quando não há corpo legível", async () => {
     vi.stubGlobal(
       "fetch",
-      vi.fn().mockResolvedValue({ ok: false, status: 500, json: async () => ({}) })
+      vi.fn().mockResolvedValue({ ok: false, status: 500, json: async () => ({}) }),
     )
 
     const error = await captureError(apiFetch("/api/x"))

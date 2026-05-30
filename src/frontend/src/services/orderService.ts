@@ -15,9 +15,7 @@ export function listOrders(query: OrderQuery = {}): Promise<PagedResult<OrderLis
   if (query.status) params.set("status", query.status)
 
   const queryString = params.toString()
-  return apiFetch<PagedResult<OrderListItem>>(
-    `/api/orders${queryString ? `?${queryString}` : ""}`
-  )
+  return apiFetch<PagedResult<OrderListItem>>(`/api/orders${queryString ? `?${queryString}` : ""}`)
 }
 
 export function getOrder(id: string): Promise<Order> {

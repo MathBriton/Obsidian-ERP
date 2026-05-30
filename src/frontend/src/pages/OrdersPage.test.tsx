@@ -34,7 +34,7 @@ function renderPage(ui: ReactNode) {
   return render(
     <QueryClientProvider client={queryClient}>
       <MemoryRouter>{ui}</MemoryRouter>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   )
 }
 

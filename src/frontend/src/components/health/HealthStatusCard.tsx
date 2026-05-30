@@ -23,21 +23,12 @@ export function HealthStatusCard() {
         <CardDescription>Conexão com o backend Obsidian ERP</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-3">
-        {isPending && (
-          <p className="text-muted-foreground text-sm">Verificando…</p>
-        )}
-        {isError && (
-          <p className="text-destructive text-sm">
-            Não foi possível conectar à API.
-          </p>
-        )}
+        {isPending && <p className="text-muted-foreground text-sm">Verificando…</p>}
+        {isError && <p className="text-destructive text-sm">Não foi possível conectar à API.</p>}
         {data && (
           <div className="flex items-center gap-2">
             <span
-              className={cn(
-                "size-2.5 rounded-full",
-                isHealthy ? "bg-success" : "bg-destructive"
-              )}
+              className={cn("size-2.5 rounded-full", isHealthy ? "bg-success" : "bg-destructive")}
               aria-hidden
             />
             <span className="font-medium">{data.status}</span>
@@ -45,12 +36,7 @@ export function HealthStatusCard() {
         )}
       </CardContent>
       <CardFooter>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => refetch()}
-          disabled={isFetching}
-        >
+        <Button variant="outline" size="sm" onClick={() => refetch()} disabled={isFetching}>
           <RefreshCw className={cn(isFetching && "animate-spin")} />
           {isFetching ? "Atualizando…" : "Atualizar"}
         </Button>

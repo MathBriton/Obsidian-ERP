@@ -26,14 +26,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     async (body: LoginRequest) => {
       persist(await authService.login(body))
     },
-    [persist]
+    [persist],
   )
 
   const register = useCallback(
     async (body: RegisterRequest) => {
       persist(await authService.register(body))
     },
-    [persist]
+    [persist],
   )
 
   const logout = useCallback(() => {
@@ -42,9 +42,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   return (
-    <AuthContext.Provider
-      value={{ user, isAuthenticated: user !== null, login, register, logout }}
-    >
+    <AuthContext.Provider value={{ user, isAuthenticated: user !== null, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   )
