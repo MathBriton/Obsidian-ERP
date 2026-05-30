@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { getErrorMessage } from "@/lib/apiClient"
 import { useCreateCustomer, useUpdateCustomer } from "@/hooks/useCustomers"
 import type { Customer } from "@/types/customer"
 
@@ -75,8 +76,8 @@ function CustomerForm({ customer, onSaved }: CustomerFormProps) {
         toast.success("Cliente criado.")
       }
       onSaved()
-    } catch {
-      toast.error("Não foi possível salvar o cliente.")
+    } catch (error) {
+      toast.error(getErrorMessage(error, "Não foi possível salvar o cliente."))
     }
   }
 

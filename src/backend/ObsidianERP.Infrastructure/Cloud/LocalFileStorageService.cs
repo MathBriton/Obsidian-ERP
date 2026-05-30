@@ -12,7 +12,7 @@ public sealed class LocalFileStorageService : IStorageService
 
     public LocalFileStorageService(string root)
     {
-        _root = root;
+        _root = Path.GetFullPath(root);
         Directory.CreateDirectory(_root);
     }
 
@@ -64,8 +64,12 @@ public sealed class LocalFileStorageService : IStorageService
         var relative = key.Replace('\\', '/').TrimStart('/');
         var combined = Path.GetFullPath(Path.Combine(_root, relative));
 
-        var rootFull = Path.GetFullPath(_root);
-        if (!combined.StartsWith(rootFull, StringComparison.Ordinal))
+        // Compara com a raiz acrescida do separador para impedir bypass do tipo
+        // "/dados/storage" vs "/dados/storage-evil".
+        var prefix = _root.EndsWith(Path.DirectorySeparatorChar)
+            ? _root
+            : _root + Path.DirectorySeparatorChar;
+        if (!combined.StartsWith(prefix, StringComparison.Ordinal))
         {
             throw new InvalidOperationException($"Chave inválida: '{key}'.");
         }

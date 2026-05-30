@@ -13,6 +13,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { getErrorMessage } from "@/lib/apiClient"
 import { useCancelOrder, useChangeOrderStatus, useOrder } from "@/hooks/useOrders"
 import type { OrderStatus } from "@/types/order"
 
@@ -32,8 +33,8 @@ export function OrderDetailsPage() {
     try {
       await changeStatusMutation.mutateAsync({ id, status })
       toast.success("Status atualizado.")
-    } catch {
-      toast.error("Não foi possível alterar o status.")
+    } catch (error) {
+      toast.error(getErrorMessage(error, "Não foi possível alterar o status."))
     }
   }
 
@@ -41,8 +42,8 @@ export function OrderDetailsPage() {
     try {
       await cancelMutation.mutateAsync(id)
       toast.success("Pedido cancelado.")
-    } catch {
-      toast.error("Não foi possível cancelar o pedido.")
+    } catch (error) {
+      toast.error(getErrorMessage(error, "Não foi possível cancelar o pedido."))
     }
   }
 

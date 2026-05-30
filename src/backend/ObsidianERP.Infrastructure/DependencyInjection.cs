@@ -29,8 +29,11 @@ public static class DependencyInjection
 
         // Abstrações cloud-prep (Stage 7) — implementações locais, prontas para troca
         // futura por S3/SQS/Redis sem afetar a aplicação.
-        var storageRoot = configuration["Storage:LocalRootPath"]
-            ?? Path.Combine(AppContext.BaseDirectory, "storage");
+        var storageRoot = configuration["Storage:LocalRootPath"];
+        if (string.IsNullOrWhiteSpace(storageRoot))
+        {
+            storageRoot = Path.Combine(AppContext.BaseDirectory, "storage");
+        }
         services.AddSingleton<IStorageService>(_ => new LocalFileStorageService(storageRoot));
         services.AddSingleton<IMessageQueue, InMemoryMessageQueue>();
         services.AddSingleton<ICacheService, InMemoryCacheService>();

@@ -9,6 +9,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import { getErrorMessage } from "@/lib/apiClient"
 import { useDeleteCustomer } from "@/hooks/useCustomers"
 import type { Customer } from "@/types/customer"
 
@@ -29,8 +30,8 @@ export function DeleteCustomerDialog({ customer, onOpenChange }: DeleteCustomerD
       await deleteMutation.mutateAsync(customer.id)
       toast.success("Cliente excluído.")
       onOpenChange(false)
-    } catch {
-      toast.error("Não foi possível excluir o cliente.")
+    } catch (error) {
+      toast.error(getErrorMessage(error, "Não foi possível excluir o cliente."))
     }
   }
 

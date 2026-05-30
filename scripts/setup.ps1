@@ -4,11 +4,22 @@ $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot
 Set-Location $root
 
+function New-Secret([int]$bytes = 48) {
+    # Segredo aleatório criptograficamente seguro (sem +/= para nao atrapalhar o .env).
+    $buffer = New-Object 'System.Byte[]' $bytes
+    $rng = [System.Security.Cryptography.RandomNumberGenerator]::Create()
+    $rng.GetBytes($buffer)
+    return ([Convert]::ToBase64String($buffer) -replace '[+/=]', '')
+}
+
 $envPath = Join-Path $root ".env"
 if (-not (Test-Path $envPath)) {
-    @'
+    $jwtSecret = New-Secret 48
+    $dbPassword = New-Secret 18
+
+    @"
 POSTGRES_USER=obsidian
-POSTGRES_PASSWORD=obsidian
+POSTGRES_PASSWORD=$dbPassword
 POSTGRES_DB=obsidian_erp
 POSTGRES_PORT=5433
 ASPNETCORE_ENVIRONMENT=Development
@@ -16,11 +27,11 @@ API_PORT=8080
 FRONTEND_PORT=5173
 JWT__Issuer=obsidian-erp
 JWT__Audience=obsidian-erp-client
-JWT__Secret=troque-por-um-segredo-longo-de-no-minimo-32-caracteres
+JWT__Secret=$jwtSecret
 JWT__AccessTokenMinutes=15
 JWT__RefreshTokenDays=7
-'@ | Set-Content -Path $envPath -Encoding utf8
-    Write-Host "Criado .env com valores padrao."
+"@ | Set-Content -Path $envPath -Encoding utf8
+    Write-Host "Criado .env com segredos gerados aleatoriamente."
 }
 else {
     Write-Host ".env ja existe — mantido."

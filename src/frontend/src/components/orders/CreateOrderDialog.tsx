@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { getErrorMessage } from "@/lib/apiClient"
 import { useCustomers } from "@/hooks/useCustomers"
 import { useCreateOrder } from "@/hooks/useOrders"
 
@@ -83,8 +84,8 @@ function CreateOrderForm({ onSaved }: { onSaved: () => void }) {
       await createMutation.mutateAsync({ customerId, items: payloadItems })
       toast.success("Pedido criado.")
       onSaved()
-    } catch {
-      toast.error("Não foi possível criar o pedido.")
+    } catch (error) {
+      toast.error(getErrorMessage(error, "Não foi possível criar o pedido."))
     }
   }
 

@@ -61,6 +61,14 @@ public class LocalFileStorageServiceTests : IDisposable
         key.Should().NotBeNullOrWhiteSpace();
     }
 
+    [Fact]
+    public async Task Chave_com_path_traversal_e_rejeitada()
+    {
+        var act = async () => await _sut.UploadAsync("../escapou.txt", StreamOf("x"), "text/plain");
+
+        await act.Should().ThrowAsync<InvalidOperationException>();
+    }
+
     public void Dispose()
     {
         if (Directory.Exists(_root))
