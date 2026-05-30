@@ -18,5 +18,8 @@
     "Audience": "obsidian-erp-client",
     "AccessTokenMinutes": 15,
     "RefreshTokenDays": 7
+  },
+  "Storage": {
+    "LocalRootPath": ""
   }
 }

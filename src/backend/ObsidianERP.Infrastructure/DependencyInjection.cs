@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ObsidianERP.Application.Abstractions;
+using ObsidianERP.Infrastructure.Cloud;
 using ObsidianERP.Infrastructure.Persistence;
 using ObsidianERP.Infrastructure.Persistence.Repositories;
 using ObsidianERP.Infrastructure.Security;
@@ -25,6 +26,14 @@ public static class DependencyInjection
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddSingleton<IPasswordHasher, BcryptPasswordHasher>();
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
+
+        // Abstrações cloud-prep (Stage 7) — implementações locais, prontas para troca
+        // futura por S3/SQS/Redis sem afetar a aplicação.
+        var storageRoot = configuration["Storage:LocalRootPath"]
+            ?? Path.Combine(AppContext.BaseDirectory, "storage");
+        services.AddSingleton<IStorageService>(_ => new LocalFileStorageService(storageRoot));
+        services.AddSingleton<IMessageQueue, InMemoryMessageQueue>();
+        services.AddSingleton<ICacheService, InMemoryCacheService>();
 
         return services;
     }
