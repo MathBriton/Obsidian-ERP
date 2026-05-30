@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
 using ObsidianERP.Api.Authentication;
 using ObsidianERP.Api.ErrorHandling;
@@ -6,6 +7,7 @@ using ObsidianERP.Api.Filters;
 using ObsidianERP.Api.HealthChecks;
 using ObsidianERP.Application;
 using ObsidianERP.Infrastructure;
+using ObsidianERP.Infrastructure.Persistence;
 using Serilog;
 
 // Logger estático para falhas de inicialização. Mantido separado do logger de DI
@@ -54,6 +56,18 @@ try
     builder.Services.AddJwtAuthentication(builder.Configuration);
 
     var app = builder.Build();
+
+    // Aplica migrations pendentes no startup, tornando `docker compose up` turnkey.
+    // Só roda no provider relacional de produção (PostgreSQL); nos testes o banco é
+    // um SQLite in-memory criado via EnsureCreated, então é pulado.
+    using (var scope = app.Services.CreateScope())
+    {
+        var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        if (db.Database.ProviderName?.Contains("Npgsql", StringComparison.Ordinal) == true)
+        {
+            db.Database.Migrate();
+        }
+    }
 
     app.UseExceptionHandler();
     app.UseSerilogRequestLogging();
