@@ -1,52 +1,91 @@
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.OpenApi;
 using ObsidianERP.Api.Authentication;
+using ObsidianERP.Api.ErrorHandling;
+using ObsidianERP.Api.Filters;
 using ObsidianERP.Api.HealthChecks;
 using ObsidianERP.Application;
 using ObsidianERP.Infrastructure;
+using Serilog;
 
-var builder = WebApplication.CreateBuilder(args);
+// Logger estático para falhas de inicialização. Mantido separado do logger de DI
+// (preserveStaticLogger) para não conflitar quando o host é construído mais de uma
+// vez — caso dos testes de integração com WebApplicationFactory.
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .CreateLogger();
 
-builder.Services
-    .AddControllers()
-    .AddJsonOptions(options =>
-        options.JsonSerializerOptions.Converters.Add(
-            new System.Text.Json.Serialization.JsonStringEnumConverter()));
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
+try
 {
-    options.SwaggerDoc("v1", new OpenApiInfo
+    var builder = WebApplication.CreateBuilder(args);
+
+    // Serilog como provedor de log, configurado via appsettings + enrichers.
+    builder.Services.AddSerilog((services, configuration) => configuration
+        .ReadFrom.Configuration(builder.Configuration)
+        .ReadFrom.Services(services)
+        .Enrich.FromLogContext()
+        .WriteTo.Console(),
+        preserveStaticLogger: true);
+
+    builder.Services
+        .AddControllers(options => options.Filters.Add<ValidationActionFilter>())
+        .AddJsonOptions(options =>
+            options.JsonSerializerOptions.Converters.Add(
+                new System.Text.Json.Serialization.JsonStringEnumConverter()));
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen(options =>
     {
-        Title = "Obsidian ERP API",
-        Version = "v1",
-        Description = "API do SaaS Obsidian ERP."
+        options.SwaggerDoc("v1", new OpenApiInfo
+        {
+            Title = "Obsidian ERP API",
+            Version = "v1",
+            Description = "API do SaaS Obsidian ERP."
+        });
     });
-});
 
-builder.Services.AddHealthChecks();
+    // Response pattern de erros: RFC 7807 (ProblemDetails) centralizado.
+    builder.Services.AddProblemDetails();
+    builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
-builder.Services.AddApplication();
-builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddJwtAuthentication(builder.Configuration);
+    builder.Services.AddHealthChecks();
 
-var app = builder.Build();
+    builder.Services.AddApplication();
+    builder.Services.AddInfrastructure(builder.Configuration);
+    builder.Services.AddJwtAuthentication(builder.Configuration);
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    var app = builder.Build();
+
+    app.UseExceptionHandler();
+    app.UseSerilogRequestLogging();
+
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+    app.UseAuthentication();
+    app.UseAuthorization();
+
+    app.MapControllers();
+    app.MapHealthChecks("/health", new HealthCheckOptions
+    {
+        ResponseWriter = HealthResponseWriter.WriteResponse
+    });
+
+    app.Run();
 }
-
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.MapControllers();
-app.MapHealthChecks("/health", new HealthCheckOptions
+// Não captura a exceção de controle que o WebApplicationFactory usa para
+// interceptar o host durante os testes de integração — ela precisa se propagar.
+catch (Exception ex) when (ex is not HostAbortedException
+    && ex.GetType().Name is not "StopTheHostException")
 {
-    ResponseWriter = HealthResponseWriter.WriteResponse
-});
-
-app.Run();
+    Log.Fatal(ex, "A aplicação encerrou de forma inesperada durante a inicialização.");
+}
+finally
+{
+    Log.CloseAndFlush();
+}
 
 // Exposed for integration testing via WebApplicationFactory<Program>.
 public partial class Program;
